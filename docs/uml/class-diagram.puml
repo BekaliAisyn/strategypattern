@@ -1,0 +1,42 @@
+@startuml
+skinparam classAttributeIconSize 0
+interface RouteStrategy {
+  +selectRoute(routes: List<Route>, request: DeliveryRequest): RouteDecision
+  +getStrategyName(): String
+}
+class RoutePlanner {
+  -strategy: RouteStrategy
+  +RoutePlanner(strategy: RouteStrategy)
+  +setStrategy(strategy: RouteStrategy): void
+  +plan(routes: List<Route>, request: DeliveryRequest): RouteDecision
+}
+class FastestRouteStrategy
+class CheapestRouteStrategy
+class EcoFriendlyRouteStrategy
+class BalancedRouteStrategy
+class SafestRouteStrategy
+class StrategySelector {
+  -strategies: Map<DeliveryPriority, RouteStrategy>
+  +register(priority, strategy): void
+  +select(request): RouteStrategy
+}
+class Route
+class Location
+class DeliveryRequest
+class RouteDecision
+class StrategyComparisonService
+RouteStrategy <|.. FastestRouteStrategy
+RouteStrategy <|.. CheapestRouteStrategy
+RouteStrategy <|.. EcoFriendlyRouteStrategy
+RouteStrategy <|.. BalancedRouteStrategy
+RouteStrategy <|.. SafestRouteStrategy
+RoutePlanner o--> RouteStrategy : delegates to
+StrategySelector ..> RouteStrategy : selects
+StrategySelector ..> DeliveryRequest
+RoutePlanner ..> RouteDecision
+RouteDecision --> Route
+Route --> Location : origin/destination
+RouteStrategy ..> DeliveryRequest
+RouteStrategy ..> Route
+StrategyComparisonService ..> RouteStrategy
+@enduml

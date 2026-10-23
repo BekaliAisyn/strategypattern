@@ -1,0 +1,16 @@
+@startuml
+actor Client
+participant StrategySelector
+participant RoutePlanner
+participant FastestRouteStrategy
+participant "Route candidates" as Routes
+Client -> StrategySelector: select(deliveryRequest)
+StrategySelector --> Client: FastestRouteStrategy
+Client -> RoutePlanner: setStrategy(strategy)
+Client -> RoutePlanner: plan(routes, request)
+RoutePlanner -> FastestRouteStrategy: selectRoute(routes, request)
+FastestRouteStrategy -> Routes: filter hard constraints
+Routes --> FastestRouteStrategy: eligible routes
+FastestRouteStrategy --> RoutePlanner: RouteDecision + explanation
+RoutePlanner --> Client: RouteDecision
+@enduml
