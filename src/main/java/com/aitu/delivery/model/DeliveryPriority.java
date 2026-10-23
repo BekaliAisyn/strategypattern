@@ -1,0 +1,2 @@
+package com.aitu.delivery.model;
+public enum DeliveryPriority { URGENT, ECONOMY, ECO, STANDARD }
